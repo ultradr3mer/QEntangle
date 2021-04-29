@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QEntangle.Server</name>
+    </assembly>
+    <members>
+        <member name="T:QEntangle.Server.Database.UserEntity">
+            <summary>
+            A user.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Database.UserEntity.Id">
+            <summary>
+            The id.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Database.UserEntity.Login">
+            <summary>
+            The users login name.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Database.UserEntity.Password">
+            <summary>
+            The password of the user.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Database.UserEntity.Salt">
+            <summary>
+            The salt of the user.
+            </summary>
+        </member>
+    </members>
+</doc>
