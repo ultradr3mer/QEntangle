@@ -32,6 +32,11 @@ namespace QEntangle.Server.Controllers
 
     #region Methods
 
+    /// <summary>
+    /// Signs up a new user.
+    /// </summary>
+    /// <param name="signupPostData">The data to signup the new user.</param>
+    /// <returns>Status code 200, on success.</returns>
     [HttpPost]
     public async Task<IActionResult> PostAsync(SignupPostData signupPostData)
     {

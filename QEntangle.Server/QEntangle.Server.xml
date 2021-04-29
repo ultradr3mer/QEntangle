@@ -4,6 +4,25 @@
         <name>QEntangle.Server</name>
     </assembly>
     <members>
+        <member name="M:QEntangle.Server.Controllers.ChoiceController.Get">
+            <summary>
+            Gets all choices of the current user.
+            </summary>
+            <returns>The users choices.</returns>
+        </member>
+        <member name="M:QEntangle.Server.Controllers.ChoiceController.PostAsync(QEntangle.Server.Data.ChoicePostData)">
+            <summary>
+            Posts a new choice.
+            </summary>
+            <returns>The choice data.</returns>
+        </member>
+        <member name="M:QEntangle.Server.Controllers.SignupController.PostAsync(QEntangle.Server.Data.SignupPostData)">
+            <summary>
+            Signs up a new user.
+            </summary>
+            <param name="signupPostData">The data to signup the new user.</param>
+            <returns>Status code 200, on success.</returns>
+        </member>
         <member name="T:QEntangle.Server.Database.UserEntity">
             <summary>
             A user.
@@ -27,6 +46,56 @@
         <member name="P:QEntangle.Server.Database.UserEntity.Salt">
             <summary>
             The salt of the user.
+            </summary>
+        </member>
+        <member name="T:QEntangle.Server.Data.ChoiceGetData">
+            <summary>
+            The retruned data when getting a choice.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Data.ChoiceGetData.Id">
+            <summary>
+            The Id.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Data.ChoiceGetData.Name">
+            <summary>
+            The name.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Data.ChoiceGetData.Options">
+            <summary>
+            The options.
+            </summary>
+        </member>
+        <member name="T:QEntangle.Server.Data.ChoicePostData">
+            <summary>
+            The data to post a new choice.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Data.ChoicePostData.Name">
+            <summary>
+            The name.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Data.ChoicePostData.Options">
+            <summary>
+            The options, seperated by ",".
+            </summary>
+        </member>
+        <member name="T:QEntangle.Server.Data.SignupPostData">
+            <summary>
+            The data to signup a new user.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Data.SignupPostData.Password">
+            <summary>
+            The password.
+            </summary>
+        </member>
+        <member name="P:QEntangle.Server.Data.SignupPostData.Username">
+            <summary>
+            The username.
             </summary>
         </member>
     </members>

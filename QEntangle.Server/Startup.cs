@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using QEntangle.Server.Helper;
 using QEntangle.Server.Services;
 using System;
 using System.Collections.Generic;
@@ -52,6 +54,7 @@ namespace QEntangle.Server
 
       app.UseRouting();
 
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
@@ -65,6 +68,9 @@ namespace QEntangle.Server
     {
       services.AddControllers();
 
+      services.AddAuthentication("BasicAuthentication")
+        .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
       services.AddScoped<IAuthService, AuthService>();
       services.AddScoped<UserSevice>();
 
@@ -72,7 +78,7 @@ namespace QEntangle.Server
       {
         setupAction.SwaggerDoc("v1", new OpenApiInfo()
         {
-          Title = "AdvancedClipboard",
+          Title = "QEntangleClipboard",
           Version = "0.0.1"
         });
 
@@ -81,32 +87,32 @@ namespace QEntangle.Server
 
         setupAction.IncludeXmlComments(xmlCommentsFullPath);
 
-        //setupAction.AddSecurityDefinition("http", new OpenApiSecurityScheme
-        //{
-        //  Description = "Basic",
-        //  Name = "Authorization",
-        //  In = ParameterLocation.Header,
-        //  Type = SecuritySchemeType.Http,
-        //  Scheme = "basic"
-        //});
+        setupAction.AddSecurityDefinition("http", new OpenApiSecurityScheme
+        {
+          Description = "Basic",
+          Name = "Authorization",
+          In = ParameterLocation.Header,
+          Type = SecuritySchemeType.Http,
+          Scheme = "basic"
+        });
 
-        //setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement()
-        //{
-        //  {
-        //    new OpenApiSecurityScheme
-        //    {
-        //      Reference = new OpenApiReference
-        //      {
-        //        Type = ReferenceType.SecurityScheme,
-        //        Id = "http"
-        //      },
-        //      Scheme = "basic",
-        //      Name = "basic",
-        //      In = ParameterLocation.Header
-        //    },
-        //    new List<string>()
-        //  }
-        //}); ;
+        setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement()
+        {
+          {
+            new OpenApiSecurityScheme
+            {
+              Reference = new OpenApiReference
+              {
+                Type = ReferenceType.SecurityScheme,
+                Id = "http"
+              },
+              Scheme = "basic",
+              Name = "basic",
+              In = ParameterLocation.Header
+            },
+            new List<string>()
+          }
+        });
 
         setupAction.AddServer(new OpenApiServer()
         {

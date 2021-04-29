@@ -1,21 +1,21 @@
 ﻿namespace QEntangle.Server.Data
 {
   /// <summary>
-  /// The data to signup a new user.
+  /// The data to post a new choice.
   /// </summary>
-  public class SignupPostData
+  public class ChoicePostData
   {
     #region Properties
 
     /// <summary>
-    /// The password.
+    /// The name.
     /// </summary>
-    public string Password { get; set; }
+    public string Name { get; set; }
 
     /// <summary>
-    /// The username.
+    /// The options, seperated by ",".
     /// </summary>
-    public string Username { get; set; }
+    public string Options { get; set; }
 
     #endregion Properties
   }

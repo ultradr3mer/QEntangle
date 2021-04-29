@@ -23,6 +23,7 @@ namespace QEntangle.Server.Database
     #region Properties
 
     public DbSet<UserEntity> QeUser { get; set; }
+    public DbSet<ChoiceEntity> Choice { get; set; }
 
     #endregion Properties
 
