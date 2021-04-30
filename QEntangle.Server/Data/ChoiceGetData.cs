@@ -24,6 +24,11 @@ namespace QEntangle.Server.Data
     /// </summary>
     public string[] Options { get; set; }
 
+    /// <summary>
+    /// The definitive option.
+    /// </summary>
+    public string DefinitiveOption { get; internal set; }
+
     #endregion Properties
   }
 }

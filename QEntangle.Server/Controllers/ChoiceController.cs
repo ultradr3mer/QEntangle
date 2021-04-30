@@ -16,14 +16,57 @@ namespace QEntangle.Server.Controllers
   [ApiController]
   public class ChoiceController : Controller
   {
-    private readonly IAuthService authService;
+    #region Fields
 
-    public ChoiceController(IAuthService authService)
+    private readonly IAuthService authService;
+    private readonly QrngAnuClient qrng;
+
+    #endregion Fields
+
+    #region Constructors
+
+    public ChoiceController(IAuthService authService, QrngAnuClient qrng)
     {
       this.authService = authService;
+      this.qrng = qrng;
     }
 
+    #endregion Constructors
+
     #region Methods
+
+    [HttpPost("Execute")]
+    public async Task<ChoiceGetData> ExecuteAsync(Guid choiceId)
+    {
+      using var connection = authService.Connection;
+      var context = new DatabaseContext(connection);
+      var entity = await context.Choice.FindAsync(choiceId);
+
+      if(entity.UserId != authService.UserId)
+      {
+        throw new Exception("Choice does not belong to this user.");
+      }
+
+      if (!string.IsNullOrEmpty(entity.DefinitiveOption))
+      {
+        throw new Exception("Choices can only be executed once.");
+      }
+
+      var options = entity.Options.Split(',');
+
+      var qrngResult = await this.qrng.JsonIphpAsync(Services.Type.Uint8, 1, null);
+      var number = qrngResult.Data.Single();
+
+      int definitiveOptionNumber = number * options.Length / 256;
+      string definitiveOptionString = options[definitiveOptionNumber];
+
+      entity.DefinitiveOption = definitiveOptionString;
+      await context.SaveChangesAsync();
+      await connection.CloseAsync();
+      var result = CreateGetDataFromEntity(entity);
+
+      return result;
+    }
 
     /// <summary>
     /// Gets all choices of the current user.
@@ -40,12 +83,7 @@ namespace QEntangle.Server.Controllers
                             where c.UserId == authService.UserId
                             select c).ToListAsync();
 
-      var result = entities.Select(c => new ChoiceGetData()
-      {
-        Id = c.Id,
-        Name = c.Name,
-        Options = c.Options.Split(",")
-      }).ToList();
+      var result = entities.Select(CreateGetDataFromEntity).ToList();
 
       return result;
     }
@@ -78,11 +116,17 @@ namespace QEntangle.Server.Controllers
       await context.SaveChangesAsync();
       await connection.CloseAsync();
 
+      return CreateGetDataFromEntity(entity);
+    }
+
+    private static ChoiceGetData CreateGetDataFromEntity(ChoiceEntity entity)
+    {
       return new ChoiceGetData()
       {
         Id = entity.Id,
         Name = entity.Name,
-        Options = optionsArray
+        Options = entity.Options.Split(","),
+        DefinitiveOption = entity.DefinitiveOption
       };
     }
 

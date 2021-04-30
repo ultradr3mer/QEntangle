@@ -73,12 +73,14 @@ namespace QEntangle.Server
 
       services.AddScoped<IAuthService, AuthService>();
       services.AddScoped<UserSevice>();
+      services.AddScoped<System.Net.Http.HttpClient>();
+      services.AddScoped<QrngAnuClient>();
 
       services.AddSwaggerGen(setupAction =>
       {
         setupAction.SwaggerDoc("v1", new OpenApiInfo()
         {
-          Title = "QEntangleClipboard",
+          Title = "QEntangle",
           Version = "0.0.1"
         });
 
